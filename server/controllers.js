@@ -23,6 +23,7 @@ module.exports.getProduct = (req, res) => {
 module.exports.getStyles = (req, res) => {
   models.getStyles(req.params.product_id)
     .then((results) => {
+      console.log('results in controller', results);
       res.status(200).send(results);
     })
     .catch((err) => {
