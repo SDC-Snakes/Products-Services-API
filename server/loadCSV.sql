@@ -10,6 +10,7 @@ CSV HEADER;
 
 COPY styles
 FROM '$data_path/styles.csv'
+WITH NULL AS 'null'
 DELIMITER ','
 CSV HEADER;
 
