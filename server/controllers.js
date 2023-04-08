@@ -23,7 +23,7 @@ module.exports.getProduct = (req, res) => {
 module.exports.getStyles = (req, res) => {
   models.getStyles(req.params.product_id)
     .then((results) => {
-      console.log('results in controller', results);
+      // console.log('results in controller', results);
       res.status(200).send(results);
     })
     .catch((err) => {
@@ -34,8 +34,8 @@ module.exports.getStyles = (req, res) => {
 module.exports.getRelated = (req, res) => {
   models.getRelated(req.params.product_id)
     .then((results) => {
-      const data = results.map((id) => id.related_product_id);
-      res.status(200).send(data);
+      // const data = results.map((id) => id.related_product_id);
+      res.status(200).send(results[0].array_agg);
     })
     .catch((err) => {
       res.status(500).send(err);

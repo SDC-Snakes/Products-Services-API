@@ -34,6 +34,6 @@ module.exports.getStyles = async (productId) => {
 };
 
 module.exports.getRelated = (productId) => {
-  const queryString = 'SELECT related_product_id FROM related_products WHERE current_product_id = $1';
+  const queryString = 'SELECT array_agg(related_product_id) FROM related_products WHERE current_product_id = $1';
   return db.any(queryString, productId);
 };

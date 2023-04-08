@@ -1,1 +1,4 @@
+/csv_data
+/node_modules
 .env
+.eslintrc.json

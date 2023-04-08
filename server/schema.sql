@@ -1,3 +1,6 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
 CREATE TABLE products (
 	id integer NOT NULL PRIMARY KEY,
 	name varchar NOT NULL,
@@ -7,16 +10,12 @@ CREATE TABLE products (
 	default_price integer NOT NULL
 );
 
--- COPY products FROM '/Users/kylestevens/HackReactor/SDC/csv/products.csv' DELIMITER ',' CSV HEADER;
-
 CREATE TABLE features (
   id integer NOT NULL PRIMARY KEY,
 	product_id integer NOT NULL REFERENCES products(id),
 	feature varchar NOT NULL,
 	value varchar NOT NULL
 );
-
--- COPY features FROM '/Users/kylestevens/HackReactor/SDC/csv/features.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE styles (
 	id integer NOT NULL PRIMARY KEY,
@@ -26,8 +25,6 @@ CREATE TABLE styles (
 	original_price integer NOT NULL,
 	default_style BOOLEAN NOT NULL
 );
-
--- COPY styles FROM '/Users/kylestevens/HackReactor/SDC/csv/styles.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE related_products (
 	id integer NOT NULL PRIMARY KEY,
