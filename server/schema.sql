@@ -46,5 +46,7 @@ CREATE TABLE skus (
 	quantity integer NOT NULL
 );
 
+CREATE INDEX product_id_index ON products(id);
+
 
 

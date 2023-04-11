@@ -3,7 +3,7 @@ const db = require('./db');
 
 module.exports.getList = (count, page) => {
   const productCount = count || 5;
-  const productPage = (page - 1) * count || 0;
+  const productPage = (page - 1) * productCount || 0;
   const queryString = 'SELECT * FROM products LIMIT $1 OFFSET $2';
   return db.any(queryString, [productCount, productPage]);
 };
@@ -53,11 +53,6 @@ module.exports.getStyles = async (productId) => {
     WHERE product_id = $12
     GROUP BY s.product_id
   `;
-
-  // const queryString = 'SELECT s.*, json_agg(json_build_object($1, p.thumbnail_url, $2, p.url)) AS photos, json_object_agg(sk.id, json_build_object($3, quantity, $4, size)) AS skus FROM styles s JOIN photos p on s.id = p.style_id JOIN skus sk on s.id = sk.style_id WHERE product_id = $5 GROUP BY s.id';
-
-  // SELECT s.product_id, json_object_agg(s.*, 'photos', json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) 'skus', json_object_agg(sk.id, json_build_object('quantity', quantity, 'size', size))) AS results FROM styles s JOIN photos p on s.id = p.style_id JOIN skus sk on s.id = sk.style_id WHERE product_id = 1 GROUP BY s.id;'
-
   return db.any(queryString, ['styles_id', 'name', 'original_price', 'sale_price', 'default?', 'photos', 'thumbnail_url', 'url', 'skus', 'quantity', 'size', productId]);
 };
 
