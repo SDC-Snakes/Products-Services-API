@@ -1,5 +1,6 @@
-import http from 'k6/http';
-import { sleep } from 'k6';
+/* eslint-disable import/no-unresolved */
+const http = require('k6/http');
+const { sleep } = require('k6');
 
 export const options = {
   vus: 10,
