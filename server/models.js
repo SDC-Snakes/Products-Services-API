@@ -14,12 +14,51 @@ module.exports.getProduct = (id) => {
 };
 
 module.exports.getStyles = async (productId) => {
-  // const queryString = 'SELECT
-  const queryString = 'SELECT s.*, json_agg(json_build_object($1, p.thumbnail_url, $2, p.url)) AS photos, json_object_agg(sk.id, json_build_object($3, quantity, $4, size)) AS skus FROM styles s JOIN photos p on s.id = p.style_id JOIN skus sk on s.id = sk.style_id WHERE product_id = $5 GROUP BY s.id';
+  const queryString = `
+    SELECT
+      s.product_id,
+      json_agg(
+        json_build_object(
+          $1, s.id,
+          $2, s.name,
+          $3, s.original_price,
+          $4, s.sale_price,
+          $5, s.default_style,
+          $6, (
+          SELECT json_agg(
+            json_build_object(
+              $7, p.thumbnail_url,
+              $8, p.url
+            )
+          )
+          AS photos
+          FROM photos p
+          WHERE s.id = p.style_id
+          ),
+          $9, (
+          SELECT json_object_agg(
+            sk.id,
+            json_build_object(
+              $10, sk.quantity,
+              $11, sk.size
+            )
+          )
+          AS skus
+          FROM skus sk
+          WHERE s.id = sk.style_id
+          )
+        )
+      ) AS results
+    FROM styles s
+    WHERE product_id = $12
+    GROUP BY s.product_id
+  `;
+
+  // const queryString = 'SELECT s.*, json_agg(json_build_object($1, p.thumbnail_url, $2, p.url)) AS photos, json_object_agg(sk.id, json_build_object($3, quantity, $4, size)) AS skus FROM styles s JOIN photos p on s.id = p.style_id JOIN skus sk on s.id = sk.style_id WHERE product_id = $5 GROUP BY s.id';
 
   // SELECT s.product_id, json_object_agg(s.*, 'photos', json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) 'skus', json_object_agg(sk.id, json_build_object('quantity', quantity, 'size', size))) AS results FROM styles s JOIN photos p on s.id = p.style_id JOIN skus sk on s.id = sk.style_id WHERE product_id = 1 GROUP BY s.id;'
 
-  return db.any(queryString, ['thumbnail_url', 'url', 'quantity', 'size', productId]);
+  return db.any(queryString, ['styles_id', 'name', 'original_price', 'sale_price', 'default?', 'photos', 'thumbnail_url', 'url', 'skus', 'quantity', 'size', productId]);
 };
 
 module.exports.getRelated = (productId) => {
