@@ -27,6 +27,7 @@ module.exports.getStyles = (req, res) => {
       res.status(200).send(results);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 };

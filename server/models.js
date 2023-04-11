@@ -8,20 +8,17 @@ module.exports.getList = (count, page) => {
   return db.any(queryString, [productCount, productPage]);
 };
 
-module.exports.getProduct = async (id) => {
+module.exports.getProduct = (id) => {
   const queryString = 'SELECT p.*, json_agg(json_build_object($1, f.feature, $2, f.value)) AS features FROM products p JOIN features f on p.id = f.product_id WHERE p.id = $3 GROUP BY p.id';
-  const response = await db.any(queryString, ['feature', 'value', id]);
-  // response[0].features = await db.any('SELECT feature, value FROM features WHERE product_id = $1', id);
-  return response;
+  return db.any(queryString, ['feature', 'value', id]);
 };
 
 module.exports.getStyles = async (productId) => {
   const queryString = 'SELECT s.*, json_agg(json_build_object($1, p.thumbnail_url, $2, p.url)) AS photos, json_object_agg(sk.id, json_build_object($3, quantity, $4, size)) AS skus FROM styles s JOIN photos p on s.id = p.style_id JOIN skus sk on s.id = sk.style_id WHERE product_id = $5 GROUP BY s.id';
 
-  // SELECT json_build_object(s.*, json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) AS photos, json_object_agg(sk.id, json_build_object('quantity', quantity, 'size', size)) AS skus)) AS results FROM styles s JOIN photos p on s.id = p.style_id JOIN skus sk on s.id = sk.style_id WHERE product_id = 1 GROUP BY s.id'
+  // SELECT s.product_id, json_object_agg(s.*, 'photos', json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) 'skus', json_object_agg(sk.id, json_build_object('quantity', quantity, 'size', size))) AS results FROM styles s JOIN photos p on s.id = p.style_id JOIN skus sk on s.id = sk.style_id WHERE product_id = 1 GROUP BY s.id;'
 
   return db.any(queryString, ['thumbnail_url', 'url', 'quantity', 'size', productId]);
-
 
   // const queryString = 'SELECT * FROM styles WHERE product_id = $1';
   // const response = await db.any(queryString, productId);
