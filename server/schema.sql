@@ -46,7 +46,7 @@ CREATE TABLE skus (
 	quantity integer NOT NULL
 );
 
-CREATE INDEX product_id_index ON products(id);
-
-
+CREATE INDEX features_products_id_index ON features(product_id);
+CREATE INDEX photos_styles_id_index ON photos(style_id);
+CREATE INDEX skus_styles_id_index ON photos(style_id);
 

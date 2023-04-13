@@ -4,6 +4,8 @@
   "description": "Server side for products API",
   "main": "index.js",
   "scripts": {
+    "start": "node server/app.js",
+    "server-dev": "nodemon server/app.js",
     "test": "jest"
   },
   "repository": {
