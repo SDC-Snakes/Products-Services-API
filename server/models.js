@@ -56,6 +56,44 @@ module.exports.getStyles = async (productId) => {
   return db.any(queryString, ['styles_id', 'name', 'original_price', 'sale_price', 'default?', 'photos', 'thumbnail_url', 'url', 'skus', 'quantity', 'size', productId]);
 };
 
+// SELECT
+//       s.product_id,
+//       json_agg(
+//         json_build_object(
+//           'styles_id', s.id,
+//           'name', s.name,
+//           'original_price', s.original_price,
+//           'sale_price', s.sale_price,
+//           'default?', s.default_style,
+//           'photos', (
+//           SELECT json_agg(
+//             json_build_object(
+//               'thumbnail_url', p.thumbnail_url,
+//               'url', p.url
+//             )
+//           )
+//           AS photos
+//           FROM photos p
+//           WHERE s.id = p.style_id
+//           ),
+//           'skus', (
+//           SELECT json_object_agg(
+//             sk.id,
+//             json_build_object(
+//               'quantity', sk.quantity,
+//               'size', sk.size
+//             )
+//           )
+//           AS skus
+//           FROM skus sk
+//           WHERE s.id = sk.style_id
+//           )
+//         )
+//       ) AS results
+//     FROM styles s
+//     WHERE product_id = 1
+//     GROUP BY s.product_id
+
 module.exports.getRelated = (productId) => {
   const queryString = 'SELECT array_agg(related_product_id) FROM related_products WHERE current_product_id = $1';
   return db.any(queryString, productId);

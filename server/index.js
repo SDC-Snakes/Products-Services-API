@@ -7,8 +7,8 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
-app.get('/loaderio-40c957308562f21e6be4216867eb7c22', (req, res) => {
-  res.send('loaderio-40c957308562f21e6be4216867eb7c22');
+app.get('/loaderio-33aa9049fb162780bcf2ff6bbc734e6b', (req, res) => {
+  res.send('loaderio-33aa9049fb162780bcf2ff6bbc734e6b');
 });
 app.use(morgan('dev'));
 app.use('/products', routes);
