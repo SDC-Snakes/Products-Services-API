@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/SDC-Snakes/Products-Services-API#readme",
   "dependencies": {
+    "compression": "^1.7.4",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "k6": "^0.0.0",

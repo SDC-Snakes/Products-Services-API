@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const compression = require('compression');
 const routes = require('./routes');
 require('dotenv').config();
 
@@ -11,6 +12,7 @@ app.get('/loaderio-33aa9049fb162780bcf2ff6bbc734e6b', (req, res) => {
   res.send('loaderio-33aa9049fb162780bcf2ff6bbc734e6b');
 });
 app.use(morgan('dev'));
+app.use(compression());
 app.use('/products', routes);
 
 app.listen(port, () => {
