@@ -3,8 +3,8 @@ const db = require('./db');
 
 module.exports.getList = (count, page) => {
   const productCount = count || 5;
-  const productPage = (page - 1) * productCount || 0;
-  const queryString = 'SELECT * FROM products LIMIT $1 OFFSET $2';
+  const productPage = (page - 1) * productCount;
+  const queryString = 'SELECT * FROM products ORDER BY id LIMIT $1 OFFSET $2';
   return db.any(queryString, [productCount, productPage]);
 };
 
