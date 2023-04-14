@@ -49,4 +49,5 @@ CREATE TABLE skus (
 CREATE INDEX features_products_id_index ON features(product_id);
 CREATE INDEX photos_styles_id_index ON photos(style_id);
 CREATE INDEX skus_styles_id_index ON photos(style_id);
-
+CREATE INDEX related_product_id_index ON related_products(current_product_id);
+CREATE INDEX styles_product_id_index ON styles(product_id);
